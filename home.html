@@ -1,0 +1,73 @@
+<!doctype html>
+<head>
+    <title>Fantasy League</title>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+<style>
+.mytable{
+height:100px;width:100px;
+border:1px solid;
+margin-top:200px;
+margin:left:0px
+}
+</style>
+</head>
+
+<body>
+<img src="gend.jpg" style="left:0px;top:0px;width:100%;height:100%;position: absolute;z-index: -10;">
+<script type="text/javascript">
+    Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+    var email;
+    var password;
+    function init(){
+        email=document.getElementById("email").value;
+        password=document.getElementById("password").value;
+        login();
+    }
+    function login(){
+        var user = Parse.Object.extend("user");
+        var query = new Parse.Query(user);
+        query.equalTo("email", email);
+        query.find({
+            success: function(results) {
+                if(results.length!=0)
+                for (var i = 0; i < results.length; i++) {
+                    var object=results[i];
+                       if(object.get('password')==password)
+                    {
+                    //alert("Successful");
+                    sessionStorage.setItem("username_stored",email);
+
+                    window.open('./fan.html','_self');
+                    break;
+                    }
+                    if(i==results.length-1)
+                    alert("Invalid Details");
+                }
+                else alert("Invalid Details");
+            },
+            error: function(error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+</script>
+<form align="center"  >
+<table align="center" class="mytable">
+<tr><td></td><td><font size="5px">LOGIN HERE</td></tr>
+<tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr><tr></tr>
+   <tr><td>
+    <font color="blue" size="4px">Username:</font></td><td> <input type="text" id="email" style="border-radius:10px"></td></tr>
+    <tr></tr>
+<tr></tr>
+<tr></tr>
+<tr></tr>
+    <tr><td><font color="blue" size="4px">Password:</font></td><td><input type="password" id="password" style="border-radius:10px"></td></tr><tr></tr><tr></tr><tr></tr>
+    <tr><td></td><td>
+    <input type="button" style="border-radius:10px;width:70px;height:30px" onclick="init();" value="Login"></td></tr>
+</table>
+   <a href=".\register.html"> <font size="4px">Sign Up</font></a>
+</form>
+</body>
+
+</html>

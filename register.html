@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<title>Registration</title>
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+<style>
+.mytable{
+height:100px;width:100px;
+border:1px solid;
+margin-top:100px;
+margin:left:0px
+</style>
+</head>
+<script type="text/javascript">
+
+
+    Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+    var Email="";
+    var Password="";
+    var Name="";
+    var Branch="";
+    var Year="";
+    var ID="";
+    var unique;
+
+    function init (){
+       Email=document.getElementById("email").value ;
+       Password=document.getElementById("password").value ;
+       Name=document.getElementById('name').value ;
+       Branch=document.getElementById('branch').value ;
+       Year=document.getElementById('year').value ;
+       ID=document.getElementById('id').value ;
+       check_all();
+    }
+    function check_all(){
+        if(check_null()==false){
+            unique_email();
+            }
+    }
+    function check_null(){
+        if(Email=="" || Password=="" || Name=="" ||  ID=="" ){
+            alert("You Have Left Something Blank And We were too lazy to find out what. the page will reload now. see. think what you've done ! ")
+            return true;
+        }
+        else return false;
+    }
+    function unique_email(){
+        var user = Parse.Object.extend("user");
+        var query = new Parse.Query(user);
+        query.equalTo("email", Email);
+        query.find({
+            success: function(results) {
+                if(results.length>0)
+                {
+                    alert("Username taken !");
+
+                }
+                else
+                if(results.length==0)
+                {
+                    unique_id();
+                }
+            },
+            error: function(error) {
+                alert("ERROR");
+                alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+    function unique_id(){
+        var user = Parse.Object.extend("user");
+        var query = new Parse.Query(user);
+        query.equalTo("collegeid", ID);
+        query.find({
+            success: function(results) {
+                if(results.length>0)
+                {
+                    alert("College ID already registered !");
+                }
+                else
+                if(results.length==0)
+                {
+                    save_user();
+                }
+            },
+            error: function(error) {
+                alert("ERROR");
+                alert("Error: " + error.code + " " + error.message);
+            }
+        });
+    }
+    function save_user(){
+        var user = Parse.Object.extend("user");
+        var u = new user();
+        u.save({
+            email: Email,
+            password: Password,
+            name: Name,
+            branch: Branch,
+            collegeid: ID,
+            year: Year,
+            Points: 100,
+            Score:0}, {
+            success: function(object) {
+                $(".success").show();
+                alert("Please note you are registered with UserName:"+Email+" password:"+Password);
+                window.open('./home.html','_self');
+
+            },
+            error: function(model, error) {
+                $(".error").show();
+                    alert("Server Down Please try after sometime !")
+            }
+        });
+    }
+
+</script>
+<body align="center">
+<img src="gend.jpg" style="left:0px;top:0px;width:100%;height:100%;position: absolute;z-index: -10;">
+
+<div align>
+<label align="center"><b><font size="4px">SIGN UP HERE:</font></b></label>
+<table class="mytable" align="center">
+<tr><td>
+    ID NO:</td><td><input type="text" size="30" id="id"></td></tr>
+    <tr><td>Username:</td><td><input type="text" size="30" id="email"></td></tr>
+    <tr><td>Password:</td><td><input type="text" size="30" id="password"></td></tr>
+    <tr><td></td><td><font size="4px"><b>This info is necessary to identify the winner</b></font></tr>
+   <tr><td> Name:</td><td><input type="text" size="30" id="name"></td></tr>
+    <tr><td>Branch:</td><td>
+    <select id="branch">
+        <option >Computer Science</option>
+        <option >Mechanical</option>
+        <option >Electrical</option>
+        <option >Electronics</option>
+        <option >EXTC</option>
+        <option value="Civil">Civil</option>
+        <option >Information Technology</option>
+        <option >Production</option>
+        <option >Textile</option>
+        <option >MCA</option>
+        <<option>Chemsar</option>
+    </select></td></tr>
+    <tr><td>Year:</td><td>
+    <select id="year">
+        <option>I</option>
+        <option>II</option>
+        <option>III</option>
+        <option >IV</option>
+    </select></td></tr>
+    <tr><td><input type="button" onclick="init();" value="Register"></td></tr>
+</table>
+</div>
+</body>
+</html>

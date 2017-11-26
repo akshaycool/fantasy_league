@@ -1,0 +1,139 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+
+</head>
+<body>
+<script>
+    Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+    var user = Parse.Object.extend("user");
+    var user_player=Parse.Object.extend("UserPlayer");
+    var player=Parse.Object.extend("roster");
+    var query = new Parse.Query(user);
+    var query2= new Parse.Query(user_player);
+    var query3= new Parse.Query(player);
+    var user_players=[]
+    var player_score_sum=0;
+    var user2=Parse.Object.extend("user");
+    var u=new user2();
+    var temp=false;
+    var temp2=false;
+    var usernames=[]
+    var playernames=[]
+    var playerpoints=[]
+     window.onload=get_roster()
+
+
+    function get_roster(){
+        query3.find({
+            success:function(results){
+                for(var i=0;i<results.length;i++){
+                    var objects=results[i]
+                    playernames[i]=objects.get('name')
+                    playerpoints[i]= objects.get('points')
+                    if(i==results.length-1){
+                     update_score_user_player();
+                    }
+                }
+            }
+        })
+    }
+    function update_score_user_player(){
+
+        for(var i=0;i<playernames.length;i++){
+            deploy(i)
+            if(i==playernames.length-1)
+                get_users()
+    }
+
+    }
+    function deploy(i){
+        query2.equalTo('PlayerID',playernames[i])
+        query2.find({
+            success:function(results){
+                for(var j=0;j<results.length;j++){
+                    var object=results[j];
+
+                    object.set('points',playerpoints[i])
+                    object.save(null, {
+                        success: function(object) {
+                            object.set('points', playerpoints[i]);
+                            object.save();
+                        }
+                    });
+                }
+            }
+        });
+
+    }
+    function get_pos(name){
+        for(var k=0;k<playernames.length;k++)
+            if (playernames[k]==name)
+                return k
+
+        else return -1
+    }
+    function get_users(){
+        query.find({
+                    success:function(results){
+                        for(var i=0;i<results.length;i++){
+                            var objects=results[i]
+                            usernames[i]=objects.get('email')
+                            if(i==results.length-1)
+                            user_player_funct();
+                            //alert(objects.get('name'))
+                        }
+
+                    }
+        })
+    }
+    function user_player_funct(){
+        for( i=0;i<usernames.length;i++){
+            //alert("i "+i)
+            sum_up(i)
+        }
+    }
+    function sum_up(i){
+        var total_points=0;
+        var query2= new Parse.Query(user_player);
+        query2.equalTo('email',usernames[i]);
+        query2.find(
+                {
+                    success:function(results){
+
+                        for(var j=0;j<results.length;j++){
+                            var object=results[j];
+                            //alert("sp")
+                            total_points+=object.get('points');
+                            if(j==results.length-1){
+                                //alert(total_points+" "+usernames[i])
+                                var obj=Parse.Object.extend("user");
+                                var obj2=new Parse.Query(obj);
+                                obj2.equalTo('email',usernames[i]);
+                                obj2.find({
+                                    success:function(result){
+                                        var object=result[0];
+                                        object.set('Points',total_points);
+                                        object.save(null, {
+                                            success: function(object) {
+                                                object.set("Points", total_points);
+                                                object.save();
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        }
+
+                    }
+                }
+        );
+    }
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+<html>
+<head>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+
+
+</head>
+
+<body>
+
+<script>
+/*This is where we'll have to write the jquery for bringing all the players that will be playing on this day. We can have a checkbox group associate with each player. We will have to decide which of the fields of data well display. Name,Branch,Year,Cost are some essential ones. We can also display current campaing data. We can display all datat current and previous on a different or a hidden span field(which will appear once a button is clicked). The next thing we need to do here is maintain a record of the number of selects(11). My view is not to keep restrictions on the number of 7 batsmen and 4 bowlers or nything like that. But we can discuss it later. The is reusable, ie within a certain span of time the changes to the deck can be made, we'll have to ensure that by writting query functions.*/
+/*
+Parse.initialise thingy;
+var admisible_time;
+var no_of_players_selected=(select * from userrooster).length;
+var no_of_points_left=select points from player where player_id=
+var query_array=(select * from players,match where player_branchid=matchid and matchdate=admissible date
+)
+for(i=0;i<query_array.length;i++)
+{We'll have to check here if the player is already in the player rooster...if so we'll have to mark the check box.
+write data
+}
+Now the user can select or deselect a checkbox. For every selection the player count will increase, and cost will decrease. We must ensure that for every deselect the user points are restored and so in the number of players decreased.
+
+After this when the player will press ok we need to update the database and redirect to the homepage of the user again.
+*/
+
+Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+
+   var id= sessionStorage.getItem("username_stored");
+ 
+   var arr=[];
+var scores=[];
+
+    var player=Parse.Object.extend("roster");
+
+    var query=new Parse.Query(player);
+
+    var existing =Parse.Object.extend("UserPlayer");
+
+    var query2=new Parse.Query(existing);
+
+    query2.equalTo("email",id);
+ 
+  var exi=[];
+    
+query2.find(
+ 
+           {
+ 
+               success:function(results)
+{
+
+                    for(var i=0;i<results.length; i++)
+{
+                        var object=results[i];
+  
+                      exi[i]=object.get('PlayerID');
+
+                         // alert(exi[i]);
+
+                    }
+                }
+
+            }
+
+
+    );
+ 
+   query.equalTo('display',true)
+
+    query.find({
+
+                success: function(results) {
+
+                    if(results.length!=0)
+
+                    {document.write('<h3 align="center">Current Available Roster:</h3>');
+
+                       // document.write('<div align=center style="background-color:orangered;">');
+                        document.write('<table border="1" align=center style="background-color:lightskyblue">');
+
+                        document.write('<tr bgcolor="gray"><td></td><td>Name</td><td>Points</td></tr>');
+
+
+                    for (var i = 0; i < results.length; i++) {
+
+                            var object=results[i];
+
+                             document.write('<form id="players" name="players">')
+
+                            for (var i = 0; i < results.length; i++) {
+  
+                              var object = results[i];
+
+                               //alert(exi.indexOf(object.get('name')));
+
+                                if(exi.indexOf(object.get('name'))!=-1) {
+
+                                document.write('<tr><td><input name="roster" type="checkbox" checked="true"></td><td>'+object.get('name')+'</td>'+'<td>'+object.get('points')+'</td></tr>');}
+  
+                              else{
+
+                                    document.write('<tr><td><input name="roster" type="checkbox" ></td><td>'+object.get('name')+'</td>'+'<td>'+object.get('points')+'</td></tr>');
+                                
+}
+                               
+ arr[i]=object.get('name');
+
+                                scores[i]=object.get('points');
+
+                                //alert(arr[i]);
+
+
+                            }
+
+ 
+                           checkboxlimit(document.forms.players.roster,11);
+
+                        document.write('</table>');
+                        document.write('<div align="center" style="padding-top: 10px">')
+                            document.write('<input type="button" value="Save Team" onclick="dosomething(document.forms.players.roster,11,arr)" align="center">');
+                        document.write('</div>')
+                   document.write('</form >')
+                        }
+
+                // document.write('</div>');
+                        set_bg()
+  }
+                    
+                             
+  else alert("Invalid Details");
+
+                },
+
+                 error: function (error)
+ {
+                        alert("Error: " + error.code + " " + error.message);
+
+                    }
+
+
+            }
+
+
+
+    );
+
+
+
+function init(){
+
+    alert("here");
+
+checkboxlimit(document.forms.players.roster,11);
+
+//check_player_count();
+
+}
+
+
+function check_player_count(){
+
+    var userplayer=Parse.Object.extend("UserPlayer");
+
+    var q=new Parse.Query(userplayer);
+
+    //query.equalTo()
+
+}
+
+function checkboxlimit(checkgroup, limit)
+{
+    var checkgroup=checkgroup
+
+    var limit=limit
+
+    for (var i=0; i<checkgroup.length; i++){
+
+        checkgroup[i].onclick=function(){
+
+            var checkedcount=0
+
+            for (var i=0; i<checkgroup.length; i++)
+ 
+               checkedcount+=(checkgroup[i].checked)? 1 : 0
+
+            //alert(checkedcount+"");
+
+            if (checkedcount>limit){
+
+                alert("You can only select a maximum of "+limit+" Players")
+
+                this.checked=false
+       
+     }
+       
+ }
+ 
+   }
+
+}
+
+function dosomething(checkgroup,limit,arr){
+
+    delete_players();
+ 
+       var checkgroup = checkgroup;
+
+
+        Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+
+                var checkedcount=0
+                for (var i=0; i<checkgroup.length; i++)
+                    checkedcount+=(checkgroup[i].checked)? 1 : 0
+
+                //alert(checkedcount+"");
+                if (checkedcount<limit){
+
+                    alert("You have selected less than eleven players")
+                    this.checked=false
+                }
+                else{
+                    //check_transaction(checkgroup);
+                    for (var i=0; i<checkgroup.length; i++){
+                    if(checkgroup[i].checked)
+                    {   //alert(arr[i]);
+                        var id= sessionStorage.getItem("username_stored");
+                        var user=Parse.Object.extend("UserPlayer");
+
+                        var u=new user();
+                        u.save({
+                            email:id,
+                            PlayerID:arr[i]  ,
+                            points: scores[i]
+ 
+                       },
+ {
+                      
+      success: function(object) {
+
+                                $(".success").show();
+
+                                //alert(object.get('name')+" added to team")
+
+                            },
+                
+            error: function(model, error) {
+  
+                              $(".error").show();
+
+                                alert("Server Down Please try after sometime !")
+
+                            }
+
+                        });
+
+                    }
+
+                    }
+
+                    alert("Your Team has been saved")
+
+
+                }
+
+
+
+    }
+
+function check_transaction(checkedgroup){
+ 
+      calculate_total_price(checkedgroup)
+
+    }
+
+function calculate_total_price(checkedgroup)
+{
+
+        var get_price=new Parse.Query(player);
+
+        for(var i=0;i<checkedgroup.length;i++)
+
+        {
+ 
+           if(checkedgroup[i].checked)
+
+           get_price.equalTo(document.getElementById(checkedgroup[i]))
+
+        }
+    
+}
+
+function delete_players(){
+
+    var query3=new Parse.Query(existing);
+
+    query3.equalTo('email',id)
+
+    query3.find(
+
+            {
+
+                success:function(results){
+
+
+                    for(var i=0;i<results.length;i++){
+   
+                     var myObject=results[i]
+
+                        myObject.destroy({
+
+                            success: function(myObject) {
+
+                                // The object was deleted from the Parse Cloud.
+                           
+ },
+                            
+error: function(myObject, error)
+ {
+
+                                // The delete failed.
+
+               
+                 // error is a Parse.Error with an error code and description.
+        
+                    }
+
+                        });
+
+                    }
+
+                }
+ 
+           }
+
+    )
+}
+
+
+function set_bg(){
+    document.write('<img src="stadium.png" style="left:0px;top:0px;width:100%;height:100%;position: absolute;z-index: -10;">')
+}
+</script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<html>
+<head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js"></script>
+</head>
+<body >
+<script type="text/javascript">
+
+    /*This is where we'll have to write the jquery for bringing all the players that will be playing on this day. We can have a checkbox group associate with each player. We will have to decide which of the fields of data well display. Name,Branch,Year,Cost are some essential ones. We can also display current campaing data. We can display all datat current and previous on a different or a hidden span field(which will appear once a button is clicked). The next thing we need to do here is maintain a record of the number of selects(11). My view is not to keep restrictions on the number of 7 batsmen and 4 bowlers or nything like that. But we can discuss it later. The is reusable, ie within a certain span of time the changes to the deck can be made, we'll have to ensure that by writting query functions.*/
+
+    Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+    
+    
+    var user2=Parse.Object.extend("user");
+    
+    var users_query = new Parse.Query(user2);
+    users_query.descending("Points");
+    
+    users_query.find({
+                success: function(results) {
+                    
+                    if(results.length!=0)
+                    {   //alert(results.length);
+                        document.write('<h3 align="center" style="background-color:darkblue; width:100%;  "><font color="#ffd700" size="3">User LeaderBoard</font></h3>');
+                        document.write();
+                        document.write('<table border="1" align=center>');
+                        document.write('<tr bgcolor="grey"><td>Name</td><td>Email</td><td>Branch</td><td>CollegeId</td><td>Year</td><td>Points</td></tr>');
+
+                            //alert('In loop');
+                            //document.write('<form id="players" name="players">')
+                            for (var i = 0; i < results.length; i++) {
+                                var object = results[i];
+                                if(i<3)
+                                document.write('<tr><td bgcolor="yellow">'+object.get('name')+'</td>'+'<td bgcolor="#ffd700">'+object.get('email')+'</td>'+'<td bgcolor="#ffd700">'+object.get('branch')+'</td>'+'<td bgcolor="yellow">'+object.get('collegeid')+'</td>'+'<td bgcolor="yellow">'+object.get('year')+'</td>'+'<td bgcolor="#ffd700">'+object.get('Points')+'</td>'+'</tr>');
+                                else
+                                document.write('<tr><td  bgcolor="#fff5ee">'+object.get('name')+'</td>'+'<td bgcolor="#fff5ee">'+object.get('email')+'</td>'+'<td bgcolor="#fff5ee">'+object.get('branch')+'</td>'+'<td>'+object.get('collegeid')+'</td>'+'<td bgcolor="#fff5ee">'+object.get('year')+'</td>'+'<td bgcolor="#fff5ee">'+object.get('Points')+'</td>'+'</tr>');
+     
+                            }
+                        document.write('</table>');
+
+                        
+                    }
+
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            }
+
+
+
+    );
+
+    var user3=Parse.Object.extend("roster");
+    
+    var players_query = new Parse.Query(user3);
+    players_query.descending("points");
+    players_query.find({
+                success: function(results) {
+                    
+                    if(results.length!=0)
+                    {   //alert(results.length);
+                        document.write('<h3 align="center" style="background-color:darkblue; width:100%;"><font color="#adff2f" size="3">Player LeaderBoard</font></h3>');
+                        document.write('<table border="1" align=center>');
+                        document.write('<tr bgcolor="grey"><td>Name</td><td>Position</td><td>Branch</td><td>Points</td></tr>');
+
+                            //alert('In loop');
+                            //document.write('<form id="players" name="players">')
+                            for (var i = 0; i < results.length; i++) {
+                                var object = results[i];
+                                if(i<3)
+                                document.write('<tr><td bgcolor="#adff2f">'+object.get('name')+'</td>'+'<td bgcolor="#adff2f">'+object.get('position')+'</td>'+'<td bgcolor="#adff2f">'+object.get('branch')+'</td>'+'<td bgcolor="#adff2f">'+object.get('points')+'</td>'+'</tr>');
+                                else
+                                document.write('<tr><td bgcolor="#fff5ee">'+object.get('name')+'</td>'+'<td bgcolor="#fff5ee">'+object.get('position')+'</td>'+'<td bgcolor="#fff5ee">'+object.get('branch')+'</td>'+'<td bgcolor="#fff5ee">'+object.get('points')+'</td>'+'</tr>');
+                            }
+                        document.write('</table>');
+
+                    document.body.style.backgroundImage="url('stadium.png')";
+                    document.body.style.backgroundAttachment='fixed';
+                    document.body.style.backgroundSize='100%';
+                    //document.body.style.bac='fixed';
+
+                    //document.write('<img src="stadium1.png" style="left:0px;top:0px;width:100%;height:100%;position: absolute;z-index: -10;">')
+                    }
+
+                },
+                error: function (error) {
+                    alert("Error: " + error.code + " " + error.message);
+                }
+            }
+
+
+
+    );
+
+
+
+
+</script>
+</body>
+</html>

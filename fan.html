@@ -1,0 +1,290 @@
+<html>
+
+<head>
+
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+</script>
+
+    <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.2.16.min.js">
+</script>
+
+
+</head>
+
+<body>
+
+<img src="stadium3.png" style="left:0px;top:0px;width:100%;height:100%;position: absolute;z-index: -10;">
+
+<script>
+
+    Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+
+    window.onload=check_login();
+ 
+   function check_login(){
+
+    if(sessionStorage.getItem('username_stored')==''){
+
+        window.location='./home.html';
+  
+  }
+
+ 
+   }
+
+  
+  user=sessionStorage.getItem("username_stored");
+
+    //alert(user);
+var scr="";
+
+    var points="";
+
+    var name=""
+;
+    var user2 = Parse.Object.extend("user");
+
+    var query = new Parse.Query(user2);
+
+    query.equalTo("email", user);
+
+    query.find(
+
+            {
+ 
+               success: function(results) {
+  
+                  if(results.length!=0)
+
+                    {
+   for(var i= 0; i<results.length;i++)
+
+                    {
+var object=results[i];
+
+                        name=object.get('name');
+
+                        points=object.get('Points');
+ 
+                       scr=object.get('Score');
+      
+                  //document.write("Welcome, "+name+' ('+user+')');
+
+                        load_content();
+
+
+                    }
+
+                    }
+
+
+
+                    else window.location='./home.html';
+
+                },
+   
+             error: function(error) {
+ 
+                   alert("Error: " + error.code + " " + error.message);
+  
+              }
+
+            }
+
+    );
+
+
+    function load_content(){
+
+
+        document.getElementById('name').innerHTML+="Welcome, "+name+' ('+user+')';
+            document.getElementById('score_value').innerHTML=scr;
+
+            document.getElementById('point_value').innerHTML=points;
+            document.body.style.backgroundImage="url('stadium3.png')";
+                    document.body.style.backgroundAttachment='fixed';
+                    document.body.style.backgroundSize='100%';
+
+
+
+    }
+
+    function logout_clicked(){
+        sessionStorage.setItem('username_stored','');
+
+        window.location='./home.html';
+
+    }
+    //alert(points);
+//The score nad current points must be brought
+ 
+  /* document.write('<p>Score:'+ scr+'&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspPoints:'+points+'</p>') ;
+document.write('<input type=button value=Rooster name=rooster onclick=redirect()> <input type=button value=LeaderBoard name=lboard onclick=redirectleader()>'); */
+
+</script>
+
+<div id='top' align="center" style="background-color:powderblue;height:100px;width:100%;opacity:0.8">
+    <div id='name' align='center'></div>
+
+<div align="center">
+
+Score <label id="score_value"> </label>
+</div>
+
+<div align="center">
+Points <label id="point_value"></label>
+</div>
+    <div align="center">
+        <input type=button value=Rooster name=rooster onclick=redirect()>
+
+        <input type=button value=LeaderBoard name=lboard onclick=redirectleader()>
+
+        <input type="button" value="Logout" onclick="logout_clicked()">
+
+    </div>
+</div>
+
+<br>
+<br>
+
+<div align="center">
+    <h3 style="color: white;">Your Current Team</h3>
+<canvas id="myCanvas0" width="150" height="200" style="border:1px solid #000000;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas1" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas2" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas3" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas4" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas5" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+<br>
+
+<canvas id="myCanvas6" width="150" height="200" style="border:1px solid #000000;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas7" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas8" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas9" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+<canvas id="myCanvas10" width="150" height="200" style="border:1px solid #000000;;background-color:lemonchiffon;opacity:0.8">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+</div>
+<script>
+//alert(str);
+
+Parse.initialize("WIW3frWFFnl2sZsVC4B0b1Y1ztb5kaHsJaHCAl3n", "0S2tmUGSOZItSv5NmFZNpyF0sDrI7tZ5LCJ8zJjp");
+
+var player=Parse.Object.extend("UserPlayer");
+
+var id= sessionStorage.getItem("username_stored");
+
+var query=new Parse.Query(player);
+
+query.equalTo("email",id);
+
+query.find(
+
+        {
+
+            success: function(results) {
+
+                if(results.length!=0)
+   
+             {
+
+
+                    for (var i = 0; i < results.length; i++) {
+
+                        var object=results[i];
+                
+        var name=object.get('PlayerID');
+   
+        var points=object.get('points');                     //var ob=Parse.Object.extend("roster");
+  
+                      var c=document.getElementById("myCanvas"+i+"");
+ 
+                       var ctx=c.getContext("2d");
+
+                        ctx.font="15px Arial";
+
+                        ctx.fillText("Name:"+name,10,50);
+
+                        ctx.fillText("Points:"+points,10,80);
+
+                        //alert(object.get('PlayerID'));
+
+
+                    }
+                  }
+                else
+                {for(i=0;i<11;i++){
+                    var c=document.getElementById("myCanvas"+i+"");
+                    var ctx=c.getContext("2d");
+                    ctx.font="15px Arial";
+                    ctx.fillText("No selected Player",10,50);
+                }
+                }
+
+            },
+            error: function (error) {
+                alert("Error: " + error.code + " " + error.message);
+            }
+
+        }
+);
+var date_limit;
+var time_limit;
+/*for(i=0;i<11;i++){
+//Here we need to query the database and retrieve the rooster of the current user
+var c=document.getElementById("myCanvas"+i+"");
+var ctx=c.getContext("2d");
+ctx.font="15px Arial";
+ctx.fillText("No selected Player",10,50);
+}                                        */
+
+
+function redirect(){
+var currentdate=new Date();
+var date=currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear();
+var time=currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
+//We need to check if the current time is admissible or not for redirection; if(time is in range){
+window.location="./rooster.html";
+//}else {return;}
+//alert("Hi");
+}
+function redirectleader()
+{
+window.location="./leaderboards.html";
+}
+</script>
+</body>
+</html>
